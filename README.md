@@ -1,4 +1,5 @@
-# Getting Started with Create React App
+# Mnemonic Recovery
+This application allows end users to enter their beta.shapeshift.com/legacy mobile credentials, manually paste a legacy shapeshift encrypted wallet, and view their mnemonic upon successful entry.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
