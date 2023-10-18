@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { crypto } from '@shapeshiftoss/hdwallet-native'
+import { Box, Button, CardBody, CardFooter, Collapse, FormControl, FormLabel, Input, Stack, Text, Textarea } from "@chakra-ui/react";
 
 interface FormState {
   email: string;
@@ -59,62 +60,70 @@ const SeedForm: React.FC = () => {
     }
   };
 
+  const isInValid = useMemo(() => {
+    return !formData.email || !formData.password || !formData.encryptedWallet
+  }, [formData.email, formData.encryptedWallet, formData.password])
+
   return (
-    <form onSubmit={handleSubmit}>
-      <table>
-        <tr>
-          <td align="right">Email:</td>
-          <td align="left">
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td align="right">Password:</td>
-          <td align="left">
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td align="right">Encrypted Wallet:</td>
-          <td align="left">
-            <textarea
-              name="encryptedWallet"
-              value={formData.encryptedWallet}
-              onChange={handleTextAreaChange}
+    <Box as='form' onSubmit={handleSubmit}>
+      <CardBody px={8} py={8}>
+        <Stack spacing={6}>
+          <FormControl>
+            <FormLabel>Email</FormLabel>
+            <Input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                variant='filled'
+                size='lg'
+              />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Password</FormLabel>
+            <Input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                variant='filled'
+                size='lg'
+              />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Encrypted Secret Recovery Phrase</FormLabel>
+            <Textarea
+                name="encryptedWallet"
+                value={formData.encryptedWallet}
+                onChange={handleTextAreaChange}
+                rows={5} // specify number of rows
+                cols={30} // specify number of columns
+                variant='filled'
+                size='lg'
+              />
+          </FormControl>
+
+          <Button isDisabled={isInValid} type="submit" colorScheme='blue' size='lg'>Submit</Button>
+        </Stack>
+      </CardBody>
+      <CardFooter bg='background.surface.raised.base' gap={4} flexDir='column' px={8} py={8} borderTopWidth={1} borderColor='border.base'>
+        <Collapse in={!!formData.mnemonic}>
+          <FormControl>
+            <FormLabel>Secret Recovery Phrase</FormLabel>
+            <Textarea
+              name="mnemonic"
+              value={formData.mnemonic}
+              disabled={true}
               rows={5} // specify number of rows
               cols={30} // specify number of columns
+              variant='filled'
+              size='lg'
             />
-          </td>
-        </tr>
-        <tr>
-          <td align="right">Mnemonic:</td>
-          <td align="left">
-          <textarea
-            name="mnemonic"
-            value={formData.mnemonic}
-            disabled={true}
-            rows={5} // specify number of rows
-            cols={30} // specify number of columns
-          />
-          </td>
-        </tr>
-        <tr>
-          <td/>
-          <td align="right"><button type="submit">Submit</button></td>
-        </tr>
-        
-      </table>
-    </form>
+          </FormControl>
+        </Collapse>
+        <Text textAlign='center' color='text.subtle' fontSize='sm'>This wallet-decryption tool is provided as is, and all warranties are disclaimed</Text>
+      </CardFooter>
+    </Box>
   );
 };
 
