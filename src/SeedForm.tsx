@@ -55,7 +55,7 @@ const SeedForm: React.FC = () => {
       setFormData({ ...formData, mnemonic: mnemonic || "" });
     } catch(e) {
       console.error(e)
-      setFormData({ ...formData, mnemonic: `failed to decrypt: ${e}`});
+      setFormData({ ...formData, mnemonic: `failed to decrypt. email, password, and/or encrypted wallet are incorrect.`});
     }
   };
 
