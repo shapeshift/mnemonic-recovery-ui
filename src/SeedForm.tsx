@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { crypto } from '@shapeshiftoss/hdwallet-native'
 import { Box, Button, CardBody, CardFooter, Collapse, FormControl, FormLabel, Input, Stack, Text, Textarea } from "@chakra-ui/react";
 
@@ -60,6 +60,10 @@ const SeedForm: React.FC = () => {
     }
   };
 
+  const isInValid = useMemo(() => {
+    return !formData.email || !formData.password || !formData.encryptedWallet
+  }, [formData.email, formData.encryptedWallet, formData.password])
+
   return (
     <Box as='form' onSubmit={handleSubmit}>
       <CardBody px={8} py={8}>
@@ -99,7 +103,7 @@ const SeedForm: React.FC = () => {
               />
           </FormControl>
 
-            <Button type="submit" colorScheme='blue' size='lg'>Submit</Button>
+          <Button isDisabled={isInValid} type="submit" colorScheme='blue' size='lg'>Submit</Button>
         </Stack>
       </CardBody>
       <CardFooter bg='background.surface.raised.base' gap={4} flexDir='column' px={8} py={8} borderTopWidth={1} borderColor='border.base'>
